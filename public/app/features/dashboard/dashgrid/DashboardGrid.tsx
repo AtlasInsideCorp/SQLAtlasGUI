@@ -334,7 +334,7 @@ export class DashboardGrid extends PureComponent<Props> {
         <div className="row flew-wrap" style={{ margin: 0 }}>
           {panels.map((repeat, index) => {
             return (
-              <div id={'col' + index} key={index} style={{ height: '100%', width: '250px', margin: '15px' }}>
+              <div id={'col' + index} key={index} style={{ height: '100%', width: '440px', margin: '15px' }}>
                 <a className="dashboard-row__title pointer">{repeat.scope}</a>
                 <div className="row p-2 row-panel">
                   {repeat.panels.map((panel: PanelModel, indexPanel: number) => {
@@ -343,9 +343,9 @@ export class DashboardGrid extends PureComponent<Props> {
                         id={'col' + indexPanel}
                         key={panel.id}
                         style={{
-                          height: indexPanel === 2 ? '180px' : '150px',
+                          height: indexPanel === 2 ? '180px' : '180px',
                           padding: '5px',
-                          width: indexPanel === 2 ? '250px' : '125px',
+                          width: indexPanel === 2 ? '440px' : '220px',
                         }}
                       >
                         <DashboardPanel
@@ -372,7 +372,8 @@ export class DashboardGrid extends PureComponent<Props> {
     const scopeVars: Array<{ scope: string; panels: PanelModel[] }> = [];
     for (const panel of panels) {
       const repeat = panel.repeat ? panel.repeat : 'Server';
-      if (repeat) {
+      const hasScope = Object(panel).hasOwnProperty('scopedVars');
+      if (hasScope) {
         const indexScope = scopeVars.findIndex(value => value.scope === panel.scopedVars[repeat].value);
         if (indexScope === -1) {
           scopeVars.push({ scope: panel.scopedVars[repeat].value, panels: [panel] });
