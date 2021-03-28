@@ -41,12 +41,7 @@ export class Branding {
   static AppTitle = 'SQL Atlas';
   static LoginTitle = 'Welcome to SQL Atlas';
   static GetLoginSubTitle = () => {
-    const slogans = [
-      "Don't get in the way of the data",
-      'Your single pane of glass',
-      'Built better together',
-      'Democratising data',
-    ];
+    const slogans = ['Globalizing Innovation'];
     const count = slogans.length;
     return slogans[Math.floor(Math.random() * count)];
   };
