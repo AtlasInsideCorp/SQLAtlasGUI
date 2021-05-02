@@ -315,7 +315,7 @@
         {
           "alias": "",
           "format": "table",
-          "rawSql": "select 'Failed jobs' as Metric \r\n,count(DISTINCT job_name) as Value\r\nFROM [MetricValue_ServerAgent]\r\nWHERE [run_status] = 1\r\nand system_latest = 1\r\nand run_datetime  > DATEADD(day, -1, GETDATE()) \r\nand server_name = $Server\r\nUNION ALL \r\nSELECT 'Alerts' as Metric,\r\n Value\r\nFROM [MetricValue_ServerMetrics]\r\nwhere [system_latest] = 1\r\nand Metric = 'Alerts Count'\r\nand server_name = $Server",
+          "rawSql": "WITH latest_agent AS (SELECT MAX([timestamp]) [timestamp] FROM [MetricValue_ServerAgent] WHERE server_name = $Server), latest_metrics AS (SELECT DISTINCT MAX([timestamp]) [timestamp] FROM [MetricValue_ServerAgent] WHERE server_name = $Server) select 'Failed jobs' as Metric, count(DISTINCT job_name) as Value FROM [MetricValue_ServerAgent] A INNER JOIN latest_agent ON latest_agent.[timestamp] = A.[timestamp] WHERE [run_status] = 1 and run_datetime > DATEADD(day, -1, GETDATE()) and A.server_name = $Server UNION ALL SELECT 'Alerts' as Metric, Value FROM [MetricValue_ServerMetrics] B INNER JOIN latest_metrics ON latest_metrics.[timestamp] = B.[timestamp] where Metric = 'Alerts Count' and b.server_name = $Server",
           "refId": "A"
         }
       ],
